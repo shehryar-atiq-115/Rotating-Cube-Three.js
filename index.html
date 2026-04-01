@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Cube</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- Three.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<script>
+// Scene
+const scene = new THREE.Scene();
+
+// Camera
+const camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({
+    canvas: document.querySelector('#bg')
+});
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+// Geometry
+const geometry = new THREE.BoxGeometry();
+
+// 🎯 Create text texture (your name + roll no)
+const canvas = document.createElement('canvas');
+const context = canvas.getContext('2d');
+
+canvas.width = 512;
+canvas.height = 512;
+
+context.fillStyle = "white";
+context.fillRect(0, 0, 512, 512);
+
+context.fillStyle = "black";
+context.font = "26px Arial";
+
+// Your Name (split for better fit)
+context.fillText("Muhammad Shehryar", 40, 220);
+context.fillText("Atiq", 40, 260);
+
+// Roll Number
+context.fillText("B23110006115", 40, 310);
+
+// Create texture
+const texture = new THREE.CanvasTexture(canvas);
+
+// Material
+const material = new THREE.MeshBasicMaterial({ map: texture });
+
+// Cube
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
+// Camera position
+camera.position.z = 5;
+
+// Animation
+function animate() {
+    requestAnimationFrame(animate);
+
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+
+    renderer.render(scene, camera);
+}
+
+animate();
+</script>
+
+</body>
+</html>
